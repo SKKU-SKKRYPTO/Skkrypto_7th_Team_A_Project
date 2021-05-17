@@ -1,8 +1,9 @@
 const commonPaths = require('./common-paths');
-
+const webpack = require('webpack')
+const fs = require('fs')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { WebpackPluginServe: Serve } = require('webpack-plugin-serve');
-
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 const port = process.env.PORT || 3000;
 
 const config = {
@@ -14,6 +15,20 @@ const config = {
     filename: '[name].[fullhash].js',
   },
   devtool: 'inline-source-map',
+  resolve: {
+    fallback: {
+      "fs": false,
+      "tls": false,
+      "net": false,
+      "path": false,
+      "zlib": false,
+      "http": false,
+      "https": false,
+      "stream": false,
+      "crypto": false,
+      "crypto-browserify": require.resolve('crypto-browserify'),
+    }
+  },
   module: {
     rules: [
       {
@@ -28,38 +43,49 @@ const config = {
           },
         ],
       },
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     {
+      //       loader: 'style-loader',
+      //       options: {
+      //         esModule: true,
+      //         modules: {
+      //           namedExport: true,
+      //         },
+      //       },
+      //     },
+      //     {
+      //       loader: 'css-loader',
+      //       options: {
+      //         esModule: true,
+      //         modules: {
+      //           compileType: 'module',
+      //           mode: 'local',
+      //           exportLocalsConvention: 'camelCaseOnly',
+      //           namedExport: true,
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader',
-            options: {
-              esModule: true,
-              modules: {
-                namedExport: true,
-              },
-            },
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              esModule: true,
-              modules: {
-                compileType: 'module',
-                mode: 'local',
-                exportLocalsConvention: 'camelCaseOnly',
-                namedExport: true,
-              },
-            },
-          },
-        ],
-      },
+        use: ["style-loader", "css-loader"]
+      }
     ],
   },
   plugins: [
     new webpack.DefinePlugin({
-      DEPLOYED_ADDRESS: JSON.stringify(fs.readFileSync('../deployedAddress', 'utf8').replace(/\n|\r/g, "")),
-      DEPLOYED_ABI: fs.existsSync('deployedABI') && fs.readFileSync('../deployedABI', 'utf8'),
+      DEPLOYED_ADDRESS: JSON.stringify(fs.readFileSync('deployedAddress', 'utf8').replace(/\n|\r/g, "")),
+      DEPLOYED_ABI: fs.existsSync('deployedABI') && fs.readFileSync('deployedABI', 'utf8'),
+    }),
+    new NodePolyfillPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": {
+        // This has effect on the react lib size
+        NODE_ENV: JSON.stringify("development"),
+      },
     }),
     new ReactRefreshWebpackPlugin({
       overlay: { sockIntegration: 'wps' },
