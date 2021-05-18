@@ -48,7 +48,7 @@ const Host = ({history}) => {
       <Form.Item name={['user', 'name']} label="대상" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
-      <Form.Item name={['user', 'Date']} label="기간" rules={[{ type: 'date' }]}>
+      <Form.Item name={['user', 'eventname']} label="이벤트명">
         <Input />
       </Form.Item>
       <Form.Item name={['user', 'Item']} label="상품">

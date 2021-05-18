@@ -34,7 +34,7 @@ export const hostEvent = async(value) => {
       type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
       from: sender.address,
       to:   DEPLOYED_ADDRESS,
-      data: EventContract.methods.mintToken('midterm', 20, 'starbucks').encodeABI(),
+      data: EventContract.methods.mintToken(value.user.eventname, value.user.Counting, value.user.Item).encodeABI(),
       gas:  '500000',
       value: cav.utils.toPeb('0', 'KLAY'),
     }, sender.privateKey)
@@ -50,3 +50,9 @@ export const hostEvent = async(value) => {
     });
 }
 
+export const getToken = async(tokenId) => {
+  const token = await EventContract.methods.getToken(tokenId).call();
+  console.log(token);
+  return token;
+}
+  
