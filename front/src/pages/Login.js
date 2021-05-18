@@ -13,16 +13,16 @@ const FormWrpper = styled(Form)`
 const FormItemWrapper = styled(Form.Item)`
   padding-bottom: 20px;
 `
-
+export const auth = {
+  keystore: '',
+  password: '',
+};
 const Login = ({history}) => {
     const [message, setMessage] = useState('KeyStore 파일이 필요합니다.');
     const [password, setPassword] = useState('');
     const [keystore, setKeystore] = useState('');
     const [passwordError,setPasswordError] = useState('');
-    const auth = {
-      keystore: '',
-      password: '',
-    };
+    
     const layout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 8 },
@@ -85,6 +85,7 @@ const Login = ({history}) => {
         intergrateWallet(privatekey);
         window.location.replace("/");
       } catch (e) {
+        console.error(e);
         setPasswordError("비밀번호가 일치하지 않습니다");
       }
     }

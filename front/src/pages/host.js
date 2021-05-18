@@ -2,6 +2,9 @@ import { Form, Input, InputNumber, Button, PageHeader } from 'antd';
 import styled from 'styled-components';
 import { hostEvent } from '../caverAPI';
 import React from 'react';
+import { Redirect } from 'react-router';
+import {withRouter} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 8 },
@@ -23,10 +26,12 @@ const FormWrapper = styled(Form)`
   margin-top: 50px;
 `
 
-const Host = () => {
+const Host = ({history}) => {
   const onFinish = (values) => {
     console.log(values);
+    alert('등록이 완료되었습니다!')
     hostEvent(values);
+    history.push('/');
   };
 
   return (
@@ -65,4 +70,4 @@ const Host = () => {
   );
 };
 
-export default Host
+export default withRouter(Host)
