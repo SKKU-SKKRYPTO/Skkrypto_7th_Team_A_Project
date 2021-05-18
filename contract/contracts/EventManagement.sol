@@ -27,35 +27,35 @@ contract EventManagement is ERC721{
       	uint whoCanParti;
     }
   
-  	EventToken[] public events;
+  EventToken[] public events;
   	
-  	mapping(address=>uint256) whatPID; // address값 받고 그사람의 personID를 반환한는 매핑
-		mapping(uint256=>string) tokenToOwner; // 토큰이 누구의 소유인지
-    mapping(string => EventToken) eventTokens; //eventID를 받고 Event토큰을 반환
-  	mapping(string => uint256) leftGoods; // 이벤트명 => 남은 상품의 개수
-  	mapping(address => mapping(string=>uint)) checkAlreadyParticipated; // 이미 이벤트에 참여했는지 확인(address와 string을 받고 uint반환)
-  	mapping(string=>uint) saveLastToken; //이벤트에서 발행하는 마지막 토큰의 아이디를 저장
+  mapping(address=>uint256) whatPID; // address값 받고 그사람의 personID를 반환한는 매핑
+  mapping(uint256=>string) tokenToOwner; // 토큰이 누구의 소유인지
+  mapping(string => EventToken) eventTokens; //eventID를 받고 Event토큰을 반환
+  mapping(string => uint256) leftGoods; // 이벤트명 => 남은 상품의 개수
+  mapping(address => mapping(string=>uint)) checkAlreadyParticipated; // 이미 이벤트에 참여했는지 확인(address와 string을 받고 uint반환)
+  mapping(string=>uint) saveLastToken; //이벤트에서 발행하는 마지막 토큰의 아이디를 저장
 
 
-    function mintToken(
-        string memory _tokenName, // 이벤트명
-        uint256 _quantity, // 수량
-        string memory _eventItem, // 상품명
-        uint _whoCanParti // 대상
-        )
-        public
-        {
-      			eventTokens[_tokenName] = EventToken(_tokenName,_quantity,_eventItem, _whoCanParti);
-                                                 
-      		for(uint i =0;i<_quantity;i++){
-                uint256 eventId = totalSupply().add(1);
-                saveLastToken[_tokenName] = eventId;
-            }          
+  function mintToken(
+       string memory _tokenName, // 이벤트명
+       uint256 _quantity, // 수량
+       string memory _eventItem, // 상품명
+       uint _whoCanParti // 대상
+       )
+       public
+       {
+      		eventTokens[_tokenName] = EventToken(_tokenName,_quantity,_eventItem, _whoCanParti);
+                                                
+        	for(uint i =0;i<_quantity;i++){
+        	        uint256 eventId = totalSupply().add(1);
+                	saveLastToken[_tokenName] = eventId;
+            	}          
         }
   
   
   function partiEvt(string memory _tokenName) public {
-  	require(leftGoods[_tokenName]!=0, "No goods left");
+    require(leftGoods[_tokenName]!=0, "No goods left");
     require(checkAlreadyParticipated[msg.sender][_tokenName]==0, "Already participated");
     
     checkAlreadyParticipated[msg.sender][_tokenName]=1;
