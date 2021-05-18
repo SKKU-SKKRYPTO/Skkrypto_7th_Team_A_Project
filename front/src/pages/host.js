@@ -61,9 +61,7 @@ const Host = ({history}) => {
         <Input type="file"/>
       </Form.Item>
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-        <Button type="primary" htmlType="submit">
-          주최하기
-        </Button>
+      <Button type="primary" htmlType="submit">주최하기</Button>
       </Form.Item>
     </FormWrapper>
     </div>

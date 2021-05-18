@@ -22,7 +22,6 @@ const Login = ({history}) => {
     const [password, setPassword] = useState('');
     const [keystore, setKeystore] = useState('');
     const [passwordError,setPasswordError] = useState('');
-    
     const layout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 8 },

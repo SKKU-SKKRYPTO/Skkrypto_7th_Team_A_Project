@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { withRouter } from 'react-router'
 
 const ShowMenuWrapper = styled.div`
-        width: 500px;
+        width: 700px;
         padding-left: 100px;
         margin-top: 15px;
         margin-bottom: 10px;
@@ -13,6 +13,9 @@ const ShowMenuWrapper = styled.div`
 const MenuItemWrapper = styled(Menu.Item)`
         margin-right : 50px;
 `
+const onLogout = () => {
+        sessionStorage.removeItem('walletInstance');
+}
 
 const ShowMenu = ({location, match, history}) => {
   return (
@@ -26,6 +29,12 @@ const ShowMenu = ({location, match, history}) => {
                 </MenuItemWrapper>
                 <MenuItemWrapper onClick={()=>history.push('/endevent')}>
                         <a>마감된 이벤트 보기</a>
+                </MenuItemWrapper>
+                <MenuItemWrapper onClick={()=>{
+                        onLogout();
+                        history.push('/')
+                }}>
+                        <a>로그아웃</a>
                 </MenuItemWrapper>
         </Menu>
     </ShowMenuWrapper>
